@@ -1,0 +1,209 @@
+// What is threading?
+// JavaScript is inherently a single-threaded language, meaning it executes one line of code at a time using a single call stack and a single memory heap.
+
+
+----------------------------------------------------------------------------------------
+
+-------------->Deep vs shallow copy 
+a shallow copy duplicates only the top-level properties of an object, leaving nested objects or arrays referenced to the original memory locations. In contrast, a deep copy recursively clones every single layer, creating a completely independent duplicate that shares no references with the original object
+
+-------------------------------------------------------------------------------------------
+
+const a = {
+  name: "John",
+  address: {
+    city: "Delhi"
+  }
+};
+
+const b = {...a};
+
+b.address.city = "Mumbai";
+
+console.log(a.address.city);
+
+
+EXPECTED: -----> Mumbai
+
+
+------------------------------------------------------------------------------------------
+
+console.log("1");
+
+setTimeout(() => console.log("2"), 0);
+
+Promise.resolve().then(() => console.log("3"));
+
+console.log("4");
+
+
+
+EXPECTED: -----------> 1,4,3,2
+
+
+-----------------------------------------------------------------------------------------
+const data = {
+  users: [
+    {
+      id: 1,
+      name: "",
+      role: "Captain America",
+      skills: ["", "React", "Captain America"],
+      projects: [
+        {
+          title: "",
+          owner: "Captain America",
+        },
+      ],
+    },
+  ],
+  teams: [
+    {
+      name: "",
+      members: [
+        {
+          role: "Captain America",
+        },
+      ],
+      heroes: [
+        "Steve Rogers",
+        "Black Widow",
+        "Hawkeye",
+        "Captain America",
+        "Chris Evans",
+      ],
+    },
+  ],
+};
+
+const emptyStringCount = 4;
+const captainAmericaCount = 5;
+
+//  Insttead of Captain America → Iron Man
+
+
+-----Suppose this object contains 1 million nested nodes  Your recursive solution crashes  Why?
+------>   Call stack overflow
+
+------------------------------------------------------------------------------------------------------
+
+
+
+a
+ab
+abc
+abcd
+API request on every keystroke.
+
+
+Solution ---> Debounce 
+
+--------- Debounce vs throttling 
+d->Wait until user stops typing.
+t->Allow execution every X ms.
+
+---------------------------------------------------------------------------------------
+--Flatten this array
+const comments = [
+  {
+    id: 1,
+    text: "Comment 1",
+    replies: [
+      {
+        id: 2,
+        text: "Reply 1",
+        replies: [
+          {
+            id: 3,
+            text: "Reply 2"
+          }
+        ]
+      }
+    ]
+  }
+];
+
+[
+  { id: 1, level: 0 },
+  { id: 2, level: 1 },
+  { id: 3, level: 2 }
+]
+---------------------------------------------------------------------------------------
+const a = {};
+a.self = a;
+
+console.log(a.self.self.self.self === a);
+
+----------------------------------------------------------------------------------------
+
+// Maximum 2 APIs should run at a time.
+// Responses may come in any order.
+// Final output must be in the same order as the input array.
+const apis = [
+  {
+    id: 1,
+    endpoint: "/users",
+    delay: 5000,
+  },
+  {
+    id: 2,
+    endpoint: "/orders",
+    delay: 1000,
+  },
+  {
+    id: 3,
+    endpoint: "/products",
+    delay: 3000,
+  },
+  {
+    id: 4,
+    endpoint: "/payments",
+    delay: 2000,
+  },
+  {
+    id: 5,
+    endpoint: "/companies",
+    delay: 4000,
+  },
+];
+
+
+function fetchApi(api) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        id: api.id,
+        endpoint: api.endpoint,
+        data: `Data from ${api.endpoint}`,
+      });
+    }, api.delay);
+  });
+}
+
+-----------------------------------------------------------------------------------------------------------------
+-- How would you optimise
+SELECT *
+FROM users
+WHERE email='abc@gmail.com';  for 10 million results 
+
+
+
+-----------------------------------------------------------------------------------------------------------------
+--What is an index?
+--Why not put an index on every column? 
+
+Increased storage, Slower writes
+
+The database creates a separate data structure (usually a B-Tree).
+
+-------------------------------------------------------------------------------------------------------------
+Your API receives 10,000 requests/minute. How would you scale it?
+
+Expected discussion:
+
+Load balancer
+Caching
+Redis
+DB indexing
+Horizontal scaling
+Queue systems
